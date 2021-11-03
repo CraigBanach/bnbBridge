@@ -1,6 +1,17 @@
 import React, { Component } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import { Navbar, Container, Nav } from 'react-bootstrap';
+
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./getWeb3";
+import Home from "./pages/Home";
+import Properties from "./pages/Properties";
+import AddProperty from "./pages/AddProperty";
 
 import "./App.css";
 
@@ -49,24 +60,56 @@ class App extends Component {
   };
 
   render() {
-    if (!this.state.web3) {
-      return <div>Loading Web3, accounts, and contract...</div>;
-    }
     return (
-      <div className="App">
-        <h1>Good to Go!</h1>
-        <p>Your Truffle Box is installed and ready.</p>
-        <h2>Smart Contract Example</h2>
-        <p>
-          If your contracts compiled and migrated successfully, below will show
-          a stored value of 5 (by default).
-        </p>
-        <p>
-          Try changing the value stored on <strong>line 42</strong> of App.js.
-        </p>
-        <div>The stored value is: {this.state.storageValue}</div>
-      </div>
+      <Router>
+        <div>
+          <Navbar bg="light" expand="lg">
+            <Container>
+              <Navbar.Brand>bnbBridge</Navbar.Brand>
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="me-auto">
+                  <Link className="nav-item nav-link" to="/">Home</Link>
+                  <Link className="nav-item nav-link" to="/properties">Properties</Link>
+                  <Link className="nav-item nav-link" to="/addProperty">Add Property</Link>
+                </Nav>
+              </Navbar.Collapse>
+            </Container>
+          </Navbar>
+
+          <Switch>
+              <Route path="/properties">
+                <Properties />
+              </Route>
+              <Route path="/addProperty">
+                <AddProperty />
+              </Route>
+              <Route path="/">
+                <Home />
+              </Route>
+            </Switch>
+          </div>
+      </Router>
     );
+
+    // if (!this.state.web3) {
+    //   return <div>Loading Web3, accounts, and contract...</div>;
+    // }
+    // return (
+    //   <div className="App">
+    //     <h1>Good to Go!</h1>
+    //     <p>Your Truffle Box is installed and ready.</p>
+    //     <h2>Smart Contract Example</h2>
+    //     <p>
+    //       If your contracts compiled and migrated successfully, below will show
+    //       a stored value of 5 (by default).
+    //     </p>
+    //     <p>
+    //       Try changing the value stored on <strong>line 42</strong> of App.js.
+    //     </p>
+    //     <div>The stored value is: {this.state.storageValue}</div>
+    //   </div>
+    // );
   }
 }
 
