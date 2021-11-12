@@ -8,36 +8,36 @@ contract bnbBridge {
 
   // Expect StartDate and EndDate to change in the future in order to fit the real world better
   struct RentalProperty {
-    Location location;
+    uint id;
+    string location;
     // Ethereum block when the availability period starts
     uint startDate;
     // Ethereum block when the availability period ends
     uint endDate;
     uint pricePerBlock;
     uint oneOffFee;
-  }
-
-  struct Location {
-    string Country;
+    address owner;
   }
 
   function addRentalProperty(
-    string calldata country,
+    string calldata location,
     uint startDate,
     uint endDate,
     uint pricePerBlock,
     uint oneOffFee
   ) public returns (bool success) {
-    require(bytes(country).length != 0, "Country must be specified");
+    require(bytes(location).length != 0, "Location must be specified");
     require(startDate != 0, "Start date must be specified");
     require(endDate != 0, "End date must be specified");
 
     rentalProperties[numRentalProperties] = RentalProperty(
-      Location(country),
+      numRentalProperties,
+      location,
       startDate,
       endDate,
       pricePerBlock,
-      oneOffFee
+      oneOffFee,
+      msg.sender
     );
     numRentalProperties++ ;
 
